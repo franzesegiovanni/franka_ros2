@@ -1,7 +1,7 @@
 #include "franka_example_controllers/cartesian_impedance_example_controller.hpp"
 #include "franka_example_controllers/default_robot_behavior_utils.hpp"
 #include "franka_example_controllers/pseudo_inversion.hpp"
-
+#include "franka_example_controllers/robot_utils.hpp"
 namespace franka_example_controllers {
 
 CartesianImpedanceExampleController::CallbackReturn CartesianImpedanceExampleController::on_init() {

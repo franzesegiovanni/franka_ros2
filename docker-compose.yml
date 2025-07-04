@@ -17,9 +17,12 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./limits.conf:/etc/security/limits.conf
       - /dev:/dev
+      - ${HOME}/.Xauthority:/home/user/.Xauthority:rw
     environment:
       QT_X11_NO_MITSHM: 1
       DISPLAY: $DISPLAY
+      LIBGL_ALWAYS_INDIRECT: 1
+      XDG_RUNTIME_DIR: /tmp/runtime-user
     cap_add:
       - SYS_NICE
     ulimits:

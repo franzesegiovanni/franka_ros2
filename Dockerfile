@@ -5,7 +5,10 @@ FROM ros:humble-ros-base
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    ROS_DISTRO=humble
+    ROS_DISTRO=humble \
+    DISPLAY=:0 \
+    QT_X11_NO_MITSHM=1 \
+    LIBGL_ALWAYS_INDIRECT=1
 
 ARG USER_UID=1001
 ARG USER_GID=1001
@@ -24,6 +27,18 @@ RUN apt-get update && \
         python3-colcon-common-extensions \
         sudo \
         vim \
+        x11-apps \
+        mesa-utils \
+        libgl1-mesa-glx \
+        libgl1-mesa-dri \
+        libqt5gui5 \
+        libqt5core5a \
+        libqt5dbus5 \
+        libqt5network5 \
+        libqt5widgets5 \
+        qt5-gtk-platformtheme \
+        qtbase5-dev \
+        python3-tk \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
