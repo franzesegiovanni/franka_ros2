@@ -33,6 +33,7 @@ add_library(
         ${PROJECT_NAME}
         SHARED
         src/cartesian_elbow_example_controller.cpp
+        src/cartesian_impedance_example_controller.cpp
         src/cartesian_orientation_example_controller.cpp
         src/cartesian_pose_example_controller.cpp
         src/cartesian_velocity_example_controller.cpp

@@ -49,6 +49,9 @@
       cartesian_velocity_example_controller:
         type: franka_example_controllers/CartesianVelocityExampleController
 
+      cartesian_impedance_example_controller:
+        type: franka_example_controllers/CartesianImpedanceExampleController
+
       elbow_example_controller:
         type: franka_example_controllers/ElbowExampleController
 
@@ -103,6 +106,11 @@
   cartesian_velocity_example_controller:
     ros__parameters:
       arm_id: "fr3"   
+
+/**:
+  cartesian_impedance_example_controller:
+    ros__parameters:
+      arm_id: "fr3"
 
 /**:
   elbow_example_controller:
@@ -171,6 +179,17 @@
         - 10.0
         - 10.0
         - 5.0
+
+/**:
+  cartesian_impedance_calibrated_controller:
+    ros__parameters:
+      arm_id: "fr3"
+      # Cartesian stiffness parameters
+      translational_stiffness: 150.0
+      rotational_stiffness: 10.0
+      # Cartesian damping parameters  
+      translational_damping: 10.0
+      rotational_damping: 1.0
 
 /**:
   joint_position_example_controller:
