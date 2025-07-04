@@ -1,4 +1,5 @@
 #include "franka_example_controllers/cartesian_impedance_example_controller.hpp"
+#include "franka_example_controllers/default_robot_behavior_utils.hpp"
 #include "franka_example_controllers/pseudo_inversion.hpp"
 
 namespace franka_example_controllers {
@@ -72,6 +73,21 @@ CartesianImpedanceExampleController::state_interface_configuration() const {
 
 CartesianImpedanceExampleController::CallbackReturn CartesianImpedanceExampleController::on_configure(
     const rclcpp_lifecycle::State& /*previous_state*/) {
+  auto client = get_node()->create_client<franka_msgs::srv::SetFullCollisionBehavior>(
+      "service_server/set_full_collision_behavior");
+  auto request = DefaultRobotBehavior::getDefaultCollisionBehaviorRequest();
+
+  auto future_result = client->async_send_request(request);
+  future_result.wait_for(robot_utils::time_out);
+
+  auto success = future_result.get();
+  if (!success) {
+    RCLCPP_FATAL(get_node()->get_logger(), "Failed to set default collision behavior.");
+    return CallbackReturn::ERROR;
+  } else {
+    RCLCPP_INFO(get_node()->get_logger(), "Default collision behavior set.");
+  }
+
   arm_id_ = get_node()->get_parameter("arm_id").as_string();
   auto robot_description = get_node()->get_parameter("robot_description").as_string();
   franka_robot_state_ = std::make_unique<franka_semantic_components::FrankaRobotState>(
