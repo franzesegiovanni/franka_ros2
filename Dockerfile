@@ -81,6 +81,8 @@ RUN sudo apt-get update \
         ros-humble-moveit-simple-controller-manager \
         ros-humble-rviz2 \
         ros-humble-xacro \
+        ros-humble-rqt-reconfigure \
+        ros-humble-rqt-gui \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
 
@@ -107,3 +109,5 @@ SHELL [ "/bin/bash", "-c" ]
 ENTRYPOINT [ "/franka_entrypoint.sh" ]
 CMD [ "/bin/bash" ]
 WORKDIR /ros2_ws
+# Set the ROS_DOMAIN_ID environment variable
+ENV ROS_DOMAIN_ID=71
