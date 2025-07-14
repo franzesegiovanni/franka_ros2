@@ -12,17 +12,25 @@ services:
     command: /bin/bash
     tty: true
     stdin_open: true
+    ipc: host
     volumes:
       - ./:/ros2_ws/src
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./limits.conf:/etc/security/limits.conf
       - /dev:/dev
       - ${HOME}/.Xauthority:/home/user/.Xauthority:rw
+      - ${HOME}/.ssh:/home/user/.ssh/
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
       QT_X11_NO_MITSHM: 1
       DISPLAY: $DISPLAY
-      LIBGL_ALWAYS_INDIRECT: 1
+      LIBGL_ALWAYS_INDIRECT: 0
+      LIBGL_ALWAYS_SOFTWARE: 1
+      GALLIUM_DRIVER: llvmpipe
+      MESA_GL_VERSION_OVERRIDE: 3.3
       XDG_RUNTIME_DIR: /tmp/runtime-user
+      # RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
     cap_add:
       - SYS_NICE
     ulimits:

@@ -6,6 +6,15 @@
     "service": "franka_ros2",
     "workspaceFolder": "/ros2_ws",
     "initializeCommand": "echo \"USER_UID=$(id -u $USER)\nUSER_GID=$(id -g $USER)\" > .env",
+    "postStartCommand": "mkdir -p /tmp/runtime-user",
+    "mounts": [
+        "source=${localEnv:XDG_RUNTIME_DIR},target=/tmp/runtime-user,type=bind",
+        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
+    ],
+    "containerEnv": {
+        "DISPLAY": "${localEnv:DISPLAY}",
+        "LIBGL_ALWAYS_SOFTWARE": "1"
+    },
     "customizations": {
         "vscode": {
             "extensions": [
@@ -24,5 +33,6 @@
                 "terminal.integrated.profiles.linux": { "bash": { "path": "/bin/bash" } }
             }
         }
-    }
+    },
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libgl1-mesa-glx libgl1-mesa-dri xvfb"
 }

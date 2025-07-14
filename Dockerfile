@@ -31,6 +31,14 @@ RUN apt-get update && \
         mesa-utils \
         libgl1-mesa-glx \
         libgl1-mesa-dri \
+        mesa-vulkan-drivers \
+        libegl1-mesa \
+        libgbm1 \
+        libxrandr2 \
+        libxss1 \
+        libxcursor1 \
+        libxcomposite1 \
+        libasound2 \
         libqt5gui5 \
         libqt5core5a \
         libqt5dbus5 \
