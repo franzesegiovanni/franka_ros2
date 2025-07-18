@@ -50,12 +50,27 @@ RUN apt-get update && \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install plotjuggler from source for ROS 2 Humble (before switching to user)
+RUN /bin/bash -c "mkdir -p /root/ws_plotjuggler/src && \
+    cd /root/ws_plotjuggler/src && \
+    git clone https://github.com/PlotJuggler/plotjuggler_msgs.git && \
+    git clone -b 3.10.0 https://github.com/facontidavide/PlotJuggler.git && \
+    git clone -b 2.2.1 https://github.com/PlotJuggler/plotjuggler-ros-plugins.git && \
+    cd /root/ws_plotjuggler && \
+    source /opt/ros/${ROS_DISTRO}/setup.bash && \
+    apt-get update && apt-get install --no-install-recommends -y && \
+    rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y && \
+    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release && \
+    echo 'source /root/ws_plotjuggler/install/setup.bash' >> /root/.bashrc && \
+    rm -rf /var/lib/apt/lists/*"
+
 # Setup user configuration
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
     && echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> /home/$USERNAME/.bashrc \
-    && echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> /home/$USERNAME/.bashrc
+    && echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> /home/$USERNAME/.bashrc \
+    && echo "source /root/ws_plotjuggler/install/setup.bash" >> /home/$USERNAME/.bashrc
     
 USER $USERNAME
 
@@ -93,6 +108,7 @@ RUN sudo apt-get update \
         ros-humble-rqt-gui \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /ros2_ws
 
